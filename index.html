@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SerenityBreath</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>SerenityBreath</h1>
+        </header>
+
+        <main>
+            <div class="breathing-guide">
+                <div class="circle" id="breathingCircle">
+                    <span id="countdownNumber"></span>
+                </div>
+                <p id="instructionText">Select an exercise and press Start</p>
+            </div>
+
+            <div class="controls">
+                <div class="exercise-selection">
+                    <button class="exercise-btn" data-exercise="4-7-8">4-7-8 Breathing</button>
+                    <button class="exercise-btn" data-exercise="box">Box Breathing</button>
+                    <button class="exercise-btn" data-exercise="diaphragmatic">Diaphragmatic Breathing</button>
+                    <button class="exercise-btn" data-exercise="pursed-lip">Pursed-Lip Breathing</button>
+                    <button class="exercise-btn" data-exercise="custom">Custom Breathing</button>
+                </div>
+
+                <div class="main-controls">
+                    <button id="startButton">Start</button>
+                    <button id="stopButton">Stop</button>
+                </div>
+            </div>
+
+            <div class="customization-area" id="customizationArea" style="display: none;">
+                <h2>Custom Breathing Settings</h2>
+                <div>
+                    <label for="inhaleDuration">Inhale (s):</label>
+                    <input type="number" id="inhaleDuration" min="1" value="4">
+                </div>
+                <div>
+                    <label for="hold1Duration">Hold after Inhale (s):</label>
+                    <input type="number" id="hold1Duration" min="0" value="7">
+                </div>
+                <div>
+                    <label for="exhaleDuration">Exhale (s):</label>
+                    <input type="number" id="exhaleDuration" min="1" value="8">
+                </div>
+                <div>
+                    <label for="hold2Duration">Hold after Exhale (s):</label>
+                    <input type="number" id="hold2Duration" min="0" value="0">
+                </div>
+                <button id="applyCustomButton">Apply</button>
+            </div>
+
+            <div class="session-info">
+                <div class="sound-toggle">
+                    <button id="soundToggleButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                        <span id="soundStatusText">Sound On</span>
+                    </button>
+                </div>
+                <div class="metrics">
+                    <p>Cycles: <span id="cycleCount">0</span></p>
+                    <p>Time: <span id="sessionTimer">00:00</span></p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Find your calm.</p>
+        </footer>
+    </div>
+
+    <audio id="inhaleSound" src="sounds/inhale_chime.mp3" preload="auto"></audio>
+    <audio id="exhaleSound" src="sounds/exhale_chime.mp3" preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

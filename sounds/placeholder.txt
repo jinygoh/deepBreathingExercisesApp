@@ -1,0 +1,7 @@
+This is a placeholder file for the sounds directory.
+Please add actual sound files:
+- inhale_chime.mp3
+- exhale_chime.mp3
+to this directory for the application to work correctly.
+These files should be small, gentle, and calming.
+A rising chime for inhale and a falling chime for exhale is recommended.

@@ -1,0 +1,302 @@
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F0F8FF; /* Very light, muted sky blue */
+    color: #36454F; /* Dark but soft grey */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.app-container {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+}
+
+header h1 {
+    color: #191970; /* Deep blue (desaturated) */
+    margin-bottom: 20px;
+}
+
+/* Breathing Guide */
+.breathing-guide {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.circle {
+    width: 200px;
+    height: 200px;
+    background-color: #E6E6FA; /* Hold color - very light grey/off-white */
+    border-radius: 50%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 1s ease-in-out, background-color 1s ease-in-out;
+    box-shadow: 0 0 20px rgba(173, 216, 230, 0.7); /* Soft shadow matching inhale */
+}
+
+#countdownNumber {
+    font-size: 3em;
+    color: #36454F;
+    font-weight: bold;
+}
+
+#instructionText {
+    font-size: 1.5em;
+    color: #191970;
+    min-height: 2.2em; /* Reserve space to prevent layout shifts */
+}
+
+/* Circle Animations */
+.circle.inhale {
+    transform: scale(1.2);
+    background-color: #ADD8E6; /* Calming medium blue */
+}
+
+.circle.exhale {
+    transform: scale(0.8);
+    background-color: #5F9EA0; /* Muted green/darker teal */
+}
+
+.circle.hold {
+    transform: scale(1); /* Static or could add subtle pulse later */
+    background-color: #E6E6FA; /* Very light, almost transparent */
+}
+
+
+/* Controls */
+.controls {
+    margin-bottom: 20px;
+}
+
+.exercise-selection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.exercise-btn, #startButton, #stopButton, #applyCustomButton, #soundToggleButton {
+    padding: 10px 15px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #B2DFDB; /* Soft teal for buttons */
+    color: #36454F;
+    transition: background-color 0.3s ease;
+}
+
+.exercise-btn:hover, #startButton:hover, #stopButton:hover, #applyCustomButton:hover, #soundToggleButton:hover {
+    background-color: #87CEEB; /* Lighter blue on hover */
+}
+
+.exercise-btn.active {
+    background-color: #6A5ACD; /* Soft shade of slate blue for active exercise */
+    color: white;
+}
+
+.main-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#startButton, #stopButton {
+    padding: 12px 25px;
+    font-size: 1.1em;
+}
+
+#stopButton {
+    background-color: #A2D9CE; /* Slightly different accent for stop */
+}
+#stopButton:hover {
+    background-color: #7CB9B1;
+}
+
+
+/* Customization Area */
+.customization-area {
+    background-color: #F8F8F8; /* Light grey for customization background */
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #E0FFFF; /* Light cyan border */
+}
+
+.customization-area h2 {
+    margin-top: 0;
+    color: #191970;
+    font-size: 1.2em;
+}
+
+.customization-area div {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.customization-area label {
+    margin-right: 10px;
+    color: #36454F;
+}
+
+.customization-area input[type="number"] {
+    width: 60px;
+    padding: 8px;
+    border: 1px solid #B2DFDB;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 1em;
+}
+
+/* Session Info */
+.session-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #E0FFFF; /* Light cyan for info bar */
+    border-radius: 5px;
+}
+
+.sound-toggle button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+.sound-toggle svg {
+    width: 24px;
+    height: 24px;
+    fill: #36454F; /* Icon color */
+    margin-right: 5px;
+}
+
+.sound-toggle #soundStatusText {
+    font-size: 0.9em;
+    color: #36454F;
+}
+
+.metrics p {
+    margin: 0 10px;
+    font-size: 0.9em;
+}
+
+/* Footer */
+footer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #6A5ACD;
+}
+
+/* Accessibility */
+button:focus, input:focus {
+    outline: 2px solid #87CEEB; /* Highlight focus for accessibility */
+    outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .circle {
+        width: 180px;
+        height: 180px;
+    }
+
+    #countdownNumber {
+        font-size: 2.5em;
+    }
+
+    #instructionText {
+        font-size: 1.3em;
+    }
+
+    .exercise-selection {
+        gap: 8px;
+    }
+
+    .exercise-btn, #startButton, #stopButton, #applyCustomButton, #soundToggleButton {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    #countdownNumber {
+        font-size: 2em;
+    }
+
+    #instructionText {
+        font-size: 1.1em;
+    }
+
+    .exercise-selection {
+       flex-direction: column; /* Stack buttons on very small screens */
+    }
+
+    .exercise-btn {
+        width: 100%; /* Make buttons full width */
+        margin-bottom: 5px;
+    }
+
+    .main-controls {
+        flex-direction: column;
+    }
+    #startButton, #stopButton {
+        width: 100%;
+    }
+    #startButton { margin-bottom: 10px; }
+
+
+    .customization-area div {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .customization-area label {
+        margin-bottom: 5px;
+    }
+    .customization-area input[type="number"] {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .session-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .metrics {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+    }
+}
