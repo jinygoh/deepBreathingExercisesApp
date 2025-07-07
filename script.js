@@ -18,8 +18,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const soundStatusText = document.getElementById('soundStatusText');
     const cycleCountDisplay = document.getElementById('cycleCount');
     const sessionTimerDisplay = document.getElementById('sessionTimer');
-    const inhaleSound = document.getElementById('inhaleSound');
-    const exhaleSound = document.getElementById('exhaleSound');
+    // Sound sample elements are no longer needed, will be removed from HTML later.
+    // const inhaleSound = document.getElementById('inhaleSound');
+    // const exhaleSound = document.getElementById('exhaleSound');
+
+    // Web Audio API Setup
+    let audioCtx = null;
+
+    function initAudioContext() {
+        if (!audioCtx) {
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.error("Web Audio API is not supported in this browser.", e);
+                soundEnabled = false; // Disable sound if API not supported
+                updateSoundToggleUI(); // Reflect that sound is off
+            }
+        }
+    }
+
+    // Call initAudioContext early, perhaps on DOMContentLoaded or first sound interaction.
+    // For now, let's ensure it's called before any sound generation.
+
+    function generateSound(frequency, type = 'sine', durationSeconds = 0.5, volume = 0.3) {
+        if (!audioCtx || !soundEnabled) return;
+
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+        gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+        // Fade out quickly to avoid clicks
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + durationSeconds);
+
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + durationSeconds);
+    }
+
+    function generateInhaleSound() {
+        // Higher pitch for inhale
+        generateSound(660, 'triangle', 0.4, 0.25); // A5 note, triangle wave for softer sound
+    }
+
+    function generateExhaleSound() {
+        // Lower pitch for exhale
+        generateSound(440, 'sine', 0.6, 0.2); // A4 note, sine wave
+    }
+
 
     // State Management Variables
     let currentExercise = null; // Stores the selected exercise config
@@ -532,14 +583,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playPhaseSound(soundId) {
-        // This will be detailed in Sound Implementation step
-        if (soundEnabled && soundId) {
-            const soundElement = document.getElementById(soundId);
-            if (soundElement) {
-                soundElement.currentTime = 0;
-                soundElement.play().catch(e => console.warn("Sound play failed:", e));
-            }
+        initAudioContext(); // Ensure AudioContext is initialized
+
+        if (!soundEnabled || !audioCtx || !soundId) return; // Also check if audioCtx is available
+
+        if (soundId === 'inhaleSound') {
+            generateInhaleSound();
+        } else if (soundId === 'exhaleSound') {
+            generateExhaleSound();
         }
+        // No sound for 'hold' phases (soundId will be null)
     }
 
     function updateCycleCountDisplay() {
