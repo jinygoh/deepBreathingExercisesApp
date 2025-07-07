@@ -22,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // const inhaleSound = document.getElementById('inhaleSound');
     // const exhaleSound = document.getElementById('exhaleSound');
 
+    // Constants for animation
+    const MAX_SCALE = 1.2;
+    const MIN_SCALE_NO_HOLD_AFTER = 0.1; // Target for exhale if NOT followed by a hold
+    const MIN_VISIBLE_HOLD_SCALE = 0.5;   // Target for exhale IF followed by a hold, and for the hold itself
+
     // Web Audio API Setup
     let audioCtx = null;
 
@@ -417,51 +422,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set initial state for animation based on phase type
         if (phase.name === "Inhale") {
-            breathingCircle.style.transform = 'scale(0.1)';
+            breathingCircle.style.transform = `scale(${MIN_SCALE_NO_HOLD_AFTER})`;
         } else if (phase.name === "Exhale") {
-            breathingCircle.style.transform = 'scale(1.2)';
+            breathingCircle.style.transform = `scale(${MAX_SCALE})`;
         } else if (phase.name === "Hold") {
             const previousPhaseIndex = (currentPhaseIndex - 1 + currentExercise.phases.length) % currentExercise.phases.length;
             const previousPhase = currentExercise.phases[previousPhaseIndex];
             if (previousPhase.name === "Inhale") {
-                breathingCircle.style.transform = 'scale(1.2)'; // Hold large after inhale
-            } else { // After Exhale or another Hold
-                // If holding after exhale, don't make it too small, so number is visible
-                breathingCircle.style.transform = 'scale(0.5)'; // Min scale for visibility
+                breathingCircle.style.transform = `scale(${MAX_SCALE})`; // Hold large after inhale
+            } else { // After Exhale or another Hold (implying it was small)
+                breathingCircle.style.transform = `scale(${MIN_VISIBLE_HOLD_SCALE})`;
             }
         }
         breathingCircle.style.transition = `transform ${100 / 1000}s linear, background-color 1s ease-in-out`;
 
         countdownTimer = setInterval(() => {
-            // Update number display first
             countdownNumber.textContent = currentCountdownValue;
-
-            // Animation scaling based on how many full seconds have effectively passed for animation.
-            // elapsedAnimationTime goes from 0 up to totalDuration-1 over the phase.
-            // For scaling, we want progress from 0 to 1. So (elapsedAnimationTime + 1) / totalDuration
-            // or more simply, currentCountdownValue / totalDuration as currentCountdownValue goes 1 to totalDuration.
             const animationProgress = currentCountdownValue / totalDuration;
 
             if (phase.name === "Inhale") {
-                const scale = 0.1 + (1.1 * animationProgress); // Scale from 0.1 to 1.2
-                breathingCircle.style.transform = `scale(${Math.min(scale, 1.2)})`;
+                const scale = MIN_SCALE_NO_HOLD_AFTER + ((MAX_SCALE - MIN_SCALE_NO_HOLD_AFTER) * animationProgress);
+                breathingCircle.style.transform = `scale(${Math.min(scale, MAX_SCALE)})`;
             } else if (phase.name === "Exhale") {
-                const scale = 1.2 - (1.1 * animationProgress); // Scale from 1.2 to 0.1
-                breathingCircle.style.transform = `scale(${Math.max(scale, 0.1)})`;
+                // Determine target scale for this exhale
+                let targetExhaleScale = MIN_SCALE_NO_HOLD_AFTER;
+                const nextPhaseIndex = (currentPhaseIndex + 1) % currentExercise.phases.length;
+                if (currentExercise.phases[nextPhaseIndex] && currentExercise.phases[nextPhaseIndex].name === "Hold") {
+                    targetExhaleScale = MIN_VISIBLE_HOLD_SCALE;
+                }
+
+                const scale = MAX_SCALE - ((MAX_SCALE - targetExhaleScale) * animationProgress);
+                breathingCircle.style.transform = `scale(${Math.max(scale, targetExhaleScale)})`;
             }
-            // Hold phase keeps its scale set initially by the logic above.
+            // Hold phase keeps its scale set initially.
 
             if (currentCountdownValue >= totalDuration) {
                 clearInterval(countdownTimer);
-                // Ensure final scale is set precisely at the end of the phase
+                // Ensure final scale is set precisely
                 if (phase.name === "Inhale") {
-                    breathingCircle.style.transform = 'scale(1.2)';
+                    breathingCircle.style.transform = `scale(${MAX_SCALE})`;
                 } else if (phase.name === "Exhale") {
-                    breathingCircle.style.transform = 'scale(0.1)';
+                    // Re-check target for final state of exhale
+                    let finalExhaleTarget = MIN_SCALE_NO_HOLD_AFTER;
+                    const nextPhaseIndex = (currentPhaseIndex + 1) % currentExercise.phases.length;
+                     if (currentExercise.phases[nextPhaseIndex] && currentExercise.phases[nextPhaseIndex].name === "Hold") {
+                        finalExhaleTarget = MIN_VISIBLE_HOLD_SCALE;
+                    }
+                    breathingCircle.style.transform = `scale(${finalExhaleTarget})`;
                 }
-                // For Hold, it remains as set at the start of the phase and doesn't change here.
+                // For Hold, its scale was set at the beginning of startCountdownDisplay and doesn't change.
             } else {
-                currentCountdownValue++; // Increment for the next tick's display
+                currentCountdownValue++;
             }
         }, 1000);
     }
