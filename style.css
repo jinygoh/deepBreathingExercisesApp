@@ -66,7 +66,7 @@ header h1 {
 
 .circle.exhale {
     transform: scale(0.8);
-    background-color: #8E44AD; /* Darker Wisteria Purple */
+    background-color: #2E8B57; /* Calming Sea Green */
 }
 
 .circle.hold {
@@ -99,14 +99,28 @@ header h1 {
     transition: background-color 0.3s ease;
 }
 
-.exercise-btn:hover, #startButton:hover, #stopButton:hover, #applyCustomButton:hover, #soundToggleButton:hover {
-    background-color: #4A5568; /* Even darker on hover */
+.exercise-btn:hover, #startButton:hover, #soundToggleButton:hover { /* Exclude stop & apply custom for now */
+    background-color: #3B6F44; /* Subtle dark green hover */
 }
 
+#applyCustomButton {
+    background-color: #27AE60; /* Green for Apply button */
+}
+#applyCustomButton:hover {
+    background-color: #229954; /* Darker green hover for Apply */
+}
+
+
 .exercise-btn.active {
-    background-color: #2980B9; /* Darker Peter River Blue for active */
+    background-color: #27AE60; /* Distinct green for active exercise */
     color: white;
 }
+
+/* Keep stop button red, but its hover can be a darker red as before */
+#stopButton:hover {
+    background-color: #A93226; /* Even darker red on hover */
+}
+
 
 .main-controls {
     display: flex;
@@ -213,7 +227,7 @@ footer {
 
 /* Accessibility */
 button:focus, input:focus {
-    outline: 2px solid #2980B9; /* Darker Peter River Blue for focus */
+    outline: 2px solid #2ECC71; /* Green focus outline */
     outline-offset: 2px;
 }
 

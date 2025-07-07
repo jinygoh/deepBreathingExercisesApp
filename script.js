@@ -407,57 +407,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startCountdownDisplay() {
         clearInterval(countdownTimer);
-        countdownNumber.textContent = currentCountdownValue;
 
         const phase = currentExercise.phases[currentPhaseIndex];
         const totalDuration = phase.duration;
-        let elapsedTime = 0; // Time elapsed in the current phase for animation
+        currentCountdownValue = 1; // Start counting from 1
+        let elapsedAnimationTime = 0; // For animation scaling, tracks ticks from 0 to totalDuration-1
+
+        countdownNumber.textContent = currentCountdownValue;
 
         // Set initial state for animation based on phase type
         if (phase.name === "Inhale") {
-            breathingCircle.style.transform = 'scale(0.1)'; // Start small for inhale
-            // Transition will be handled per tick
+            breathingCircle.style.transform = 'scale(0.1)';
         } else if (phase.name === "Exhale") {
-            breathingCircle.style.transform = 'scale(1.2)'; // Start large for exhale
-            // Transition will be handled per tick
+            breathingCircle.style.transform = 'scale(1.2)';
         } else if (phase.name === "Hold") {
-            // Determine if hold is after inhale or exhale to set correct scale
             const previousPhaseIndex = (currentPhaseIndex - 1 + currentExercise.phases.length) % currentExercise.phases.length;
             const previousPhase = currentExercise.phases[previousPhaseIndex];
             if (previousPhase.name === "Inhale") {
-                breathingCircle.style.transform = 'scale(1.2)'; // Hold at large size
-            } else {
-                breathingCircle.style.transform = 'scale(0.1)'; // Hold at small size (e.g. after exhale in box breathing)
+                breathingCircle.style.transform = 'scale(1.2)'; // Hold large after inhale
+            } else { // After Exhale or another Hold
+                // If holding after exhale, don't make it too small, so number is visible
+                breathingCircle.style.transform = 'scale(0.5)'; // Min scale for visibility
             }
         }
-        // Ensure transition is smooth for the scaling effect managed by interval
         breathingCircle.style.transition = `transform ${100 / 1000}s linear, background-color 1s ease-in-out`;
 
-
         countdownTimer = setInterval(() => {
-            currentCountdownValue--;
-            elapsedTime++;
+            // Update number display first
             countdownNumber.textContent = currentCountdownValue;
 
-            // Dynamic scaling for inhale/exhale
+            // Animation scaling based on how many full seconds have effectively passed for animation.
+            // elapsedAnimationTime goes from 0 up to totalDuration-1 over the phase.
+            // For scaling, we want progress from 0 to 1. So (elapsedAnimationTime + 1) / totalDuration
+            // or more simply, currentCountdownValue / totalDuration as currentCountdownValue goes 1 to totalDuration.
+            const animationProgress = currentCountdownValue / totalDuration;
+
             if (phase.name === "Inhale") {
-                const scale = 0.1 + (1.1 * (elapsedTime / totalDuration)); // Scale from 0.1 to 1.2
+                const scale = 0.1 + (1.1 * animationProgress); // Scale from 0.1 to 1.2
                 breathingCircle.style.transform = `scale(${Math.min(scale, 1.2)})`;
             } else if (phase.name === "Exhale") {
-                const scale = 1.2 - (1.1 * (elapsedTime / totalDuration)); // Scale from 1.2 to 0.1
+                const scale = 1.2 - (1.1 * animationProgress); // Scale from 1.2 to 0.1
                 breathingCircle.style.transform = `scale(${Math.max(scale, 0.1)})`;
             }
-            // Hold phase keeps its scale set initially
+            // Hold phase keeps its scale set initially by the logic above.
 
-            if (currentCountdownValue <= 0) {
+            if (currentCountdownValue >= totalDuration) {
                 clearInterval(countdownTimer);
-                // Ensure final scale is set precisely
+                // Ensure final scale is set precisely at the end of the phase
                 if (phase.name === "Inhale") {
                     breathingCircle.style.transform = 'scale(1.2)';
                 } else if (phase.name === "Exhale") {
                     breathingCircle.style.transform = 'scale(0.1)';
                 }
-                // For Hold, it remains as set at the start of the phase.
+                // For Hold, it remains as set at the start of the phase and doesn't change here.
+            } else {
+                currentCountdownValue++; // Increment for the next tick's display
             }
         }, 1000);
     }
