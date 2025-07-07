@@ -3,8 +3,8 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #F0F8FF; /* Very light, muted sky blue */
-    color: #36454F; /* Dark but soft grey */
+    background-color: #2C3E50; /* Darker Slate Blue */
+    color: #ECF0F1; /* Lighter Silver */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,16 +14,16 @@ body {
 }
 
 .app-container {
-    background-color: #FFFFFF;
+    background-color: #34495E; /* Darker Wet Asphalt */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Slightly more pronounced shadow */
     width: 90%;
     max-width: 600px;
 }
 
 header h1 {
-    color: #191970; /* Deep blue (desaturated) */
+    color: #95A5A6; /* Lighter Grey - Silver */
     margin-bottom: 20px;
 }
 
@@ -36,42 +36,42 @@ header h1 {
 .circle {
     width: 200px;
     height: 200px;
-    background-color: #E6E6FA; /* Hold color - very light grey/off-white */
+    background-color: #7F8C8D; /* Greyish color for hold */
     border-radius: 50%;
     margin: 20px auto;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: transform 1s ease-in-out, background-color 1s ease-in-out;
-    box-shadow: 0 0 20px rgba(173, 216, 230, 0.7); /* Soft shadow matching inhale */
+    box-shadow: 0 0 20px rgba(44, 62, 80, 0.7); /* Shadow based on new dark bg */
 }
 
 #countdownNumber {
     font-size: 3em;
-    color: #36454F;
+    color: #ECF0F1; /* Lighter Silver */
     font-weight: bold;
 }
 
 #instructionText {
     font-size: 1.5em;
-    color: #191970;
+    color: #BDC3C7; /* Lighter Grey - Clouds */
     min-height: 2.2em; /* Reserve space to prevent layout shifts */
 }
 
 /* Circle Animations */
 .circle.inhale {
     transform: scale(1.2);
-    background-color: #ADD8E6; /* Calming medium blue */
+    background-color: #2980B9; /* Darker Peter River Blue */
 }
 
 .circle.exhale {
     transform: scale(0.8);
-    background-color: #5F9EA0; /* Muted green/darker teal */
+    background-color: #8E44AD; /* Darker Wisteria Purple */
 }
 
 .circle.hold {
     transform: scale(1); /* Static or could add subtle pulse later */
-    background-color: #E6E6FA; /* Very light, almost transparent */
+    background-color: #7F8C8D; /* Greyish - Asbestos */
 }
 
 
@@ -94,17 +94,17 @@ header h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #B2DFDB; /* Soft teal for buttons */
-    color: #36454F;
+    background-color: #5D6D7E; /* Darker greyish blue */
+    color: #ECF0F1; /* Lighter Silver */
     transition: background-color 0.3s ease;
 }
 
 .exercise-btn:hover, #startButton:hover, #stopButton:hover, #applyCustomButton:hover, #soundToggleButton:hover {
-    background-color: #87CEEB; /* Lighter blue on hover */
+    background-color: #4A5568; /* Even darker on hover */
 }
 
 .exercise-btn.active {
-    background-color: #6A5ACD; /* Soft shade of slate blue for active exercise */
+    background-color: #2980B9; /* Darker Peter River Blue for active */
     color: white;
 }
 
@@ -121,25 +121,25 @@ header h1 {
 }
 
 #stopButton {
-    background-color: #A2D9CE; /* Slightly different accent for stop */
+    background-color: #C0392B; /* Darker Pomegranate red for stop */
 }
 #stopButton:hover {
-    background-color: #7CB9B1;
+    background-color: #A93226; /* Even darker red on hover */
 }
 
 
 /* Customization Area */
 .customization-area {
-    background-color: #F8F8F8; /* Light grey for customization background */
+    background-color: #2C3E50; /* Darker Slate Blue - same as body for seamless feel */
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
-    border: 1px solid #E0FFFF; /* Light cyan border */
+    border: 1px solid #34495E; /* Border to match app container */
 }
 
 .customization-area h2 {
     margin-top: 0;
-    color: #191970;
+    color: #95A5A6; /* Lighter Grey - Silver */
     font-size: 1.2em;
 }
 
@@ -152,16 +152,18 @@ header h1 {
 
 .customization-area label {
     margin-right: 10px;
-    color: #36454F;
+    color: #BDC3C7; /* Lighter Grey - Clouds */
 }
 
 .customization-area input[type="number"] {
     width: 60px;
     padding: 8px;
-    border: 1px solid #B2DFDB;
+    border: 1px solid #5D6D7E; /* Darker greyish blue border */
     border-radius: 4px;
     text-align: center;
     font-size: 1em;
+    background-color: #34495E; /* Darker Wet Asphalt */
+    color: #ECF0F1; /* Lighter Silver */
 }
 
 /* Session Info */
@@ -170,8 +172,9 @@ header h1 {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: #E0FFFF; /* Light cyan for info bar */
+    background-color: #2C3E50; /* Darker Slate Blue */
     border-radius: 5px;
+    color: #ECF0F1;
 }
 
 .sound-toggle button {
@@ -186,30 +189,31 @@ header h1 {
 .sound-toggle svg {
     width: 24px;
     height: 24px;
-    fill: #36454F; /* Icon color */
+    fill: #ECF0F1; /* Lighter Silver for icon */
     margin-right: 5px;
 }
 
 .sound-toggle #soundStatusText {
     font-size: 0.9em;
-    color: #36454F;
+    color: #BDC3C7; /* Lighter Grey - Clouds */
 }
 
 .metrics p {
     margin: 0 10px;
     font-size: 0.9em;
+    color: #BDC3C7; /* Lighter Grey - Clouds */
 }
 
 /* Footer */
 footer {
     margin-top: 20px;
     font-size: 0.9em;
-    color: #6A5ACD;
+    color: #95A5A6; /* Lighter Grey - Silver */
 }
 
 /* Accessibility */
 button:focus, input:focus {
-    outline: 2px solid #87CEEB; /* Highlight focus for accessibility */
+    outline: 2px solid #2980B9; /* Darker Peter River Blue for focus */
     outline-offset: 2px;
 }
 
