@@ -18,8 +18,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const soundStatusText = document.getElementById('soundStatusText');
     const cycleCountDisplay = document.getElementById('cycleCount');
     const sessionTimerDisplay = document.getElementById('sessionTimer');
-    const inhaleSound = document.getElementById('inhaleSound');
-    const exhaleSound = document.getElementById('exhaleSound');
+    // Sound sample elements are no longer needed, will be removed from HTML later.
+    // const inhaleSound = document.getElementById('inhaleSound');
+    // const exhaleSound = document.getElementById('exhaleSound');
+
+    // Constants for animation
+    const MAX_SCALE = 1.2;
+    const MIN_SCALE_NO_HOLD_AFTER = 0.1; // Target for exhale if NOT followed by a hold
+    const MIN_VISIBLE_HOLD_SCALE = 0.5;   // Target for exhale IF followed by a hold, and for the hold itself
+
+    // Web Audio API Setup
+    let audioCtx = null;
+
+    function initAudioContext() {
+        if (!audioCtx) {
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.error("Web Audio API is not supported in this browser.", e);
+                soundEnabled = false; // Disable sound if API not supported
+                updateSoundToggleUI(); // Reflect that sound is off
+            }
+        }
+    }
+
+    // Call initAudioContext early, perhaps on DOMContentLoaded or first sound interaction.
+    // For now, let's ensure it's called before any sound generation.
+
+    function generateSound(frequency, type = 'sine', durationSeconds = 0.5, volume = 0.3) {
+        if (!audioCtx || !soundEnabled) return;
+
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+
+        gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+        // Fade out quickly to avoid clicks
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + durationSeconds);
+
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + durationSeconds);
+    }
+
+    function generateInhaleSound() {
+        // Higher pitch for inhale
+        generateSound(660, 'triangle', 0.4, 0.25); // A5 note, triangle wave for softer sound
+    }
+
+    function generateExhaleSound() {
+        // Lower pitch for exhale
+        generateSound(440, 'sine', 0.6, 0.2); // A4 note, sine wave
+    }
+
 
     // State Management Variables
     let currentExercise = null; // Stores the selected exercise config
@@ -94,43 +150,66 @@ document.addEventListener('DOMContentLoaded', () => {
     // Exercise Selection
     exerciseButtons.forEach(button => {
         button.addEventListener('click', () => {
-            if (exerciseIsRunning && !exerciseIsPaused) {
-                // Optionally, prompt user if they want to stop current exercise
-                console.log("Exercise running, stop it first or implement a confirmation.");
-                return;
+            const selectedExerciseKey = button.dataset.exercise;
+
+            // If an exercise is running or paused, stop it completely
+            if (exerciseIsRunning) {
+                stopExercise(); // This function already handles UI reset like button text and timers
             }
 
-            // Remove 'active' class from all buttons
+            // Clear any 'active' class and set it for the clicked button
             exerciseButtons.forEach(btn => btn.classList.remove('active'));
-            // Add 'active' class to the clicked button
             button.classList.add('active');
 
-            const selectedExerciseKey = button.dataset.exercise;
-            currentExercise = exercises[selectedExerciseKey]; // Will be undefined until exercises are populated
+            currentExercise = exercises[selectedExerciseKey];
 
             if (selectedExerciseKey === 'custom') {
                 customizationArea.style.display = 'block';
-                // Load custom settings if not already loaded, or apply defaults to inputs
-                // This will be fleshed out in the "Custom Breathing" step
+                // Ensure custom settings are up-to-date if it's selected
+                loadCustomSettings(); // This will also update exercises.custom
+                currentExercise = exercises.custom; // Re-assign in case loadCustomSettings updated it
             } else {
                 customizationArea.style.display = 'none';
             }
 
-            // Reset UI for new selection if no exercise is running
-            if (!exerciseIsRunning) {
-                resetUIForNewSelection(selectedExerciseKey);
-            }
-            console.log(`Selected exercise: ${selectedExerciseKey}`);
+            // Reset UI elements specifically for a new selection, even after stopExercise
+            resetUIForNewSelection(selectedExerciseKey);
+
+            // Ensure start button says "Start" and is enabled, stop is disabled.
+            // stopExercise() should handle most of this, but good to be explicit.
+            startButton.textContent = 'Start';
+            startButton.disabled = false; // It should be available to start the new exercise
+            stopButton.disabled = true;
+
+            console.log(`Selected exercise: ${selectedExerciseKey}. State reset.`);
         });
     });
 
     function resetUIForNewSelection(exerciseKey) {
-        // Placeholder: Update instruction text based on selected exercise description
-        // e.g., instructionText.textContent = "Get ready for 4-7-8 Breathing";
-        countdownNumber.textContent = ''; // Clear countdown
-        // Reset circle to default state if needed
-        breathingCircle.className = 'circle'; // Removes inhale/exhale/hold classes
-        // Potentially display the first phase's duration in the circle
+        const selectedExerciseData = exercises[exerciseKey];
+        if (selectedExerciseData) {
+            instructionText.textContent = selectedExerciseData.description || `Get ready for ${selectedExerciseData.name}`;
+        } else {
+            // This case might happen if 'custom' is selected before its phases are defined
+            if (exerciseKey === 'custom' && exercises.custom && exercises.custom.phases.length === 0) {
+                instructionText.textContent = "Define custom exercise settings below.";
+            } else if (exerciseKey === 'custom' && exercises.custom) {
+                 instructionText.textContent = exercises.custom.description || "Custom exercise ready.";
+            }
+            else {
+                instructionText.textContent = "Select an exercise.";
+            }
+        }
+        countdownNumber.textContent = ''; // Clear countdown display
+        breathingCircle.className = 'circle'; // Reset circle visual classes
+        breathingCircle.style.transform = 'scale(1)'; // Reset JS-controlled scale
+        breathingCircle.style.transition = 'transform 1s ease-in-out, background-color 1s ease-in-out'; // Restore original transition
+
+        // Reset metrics that might have been partially set if user clicks rapidly
+        completedCycles = 0;
+        updateCycleCountDisplay();
+        sessionTimerDisplay.textContent = "00:00";
+        sessionStartTime = null;
     }
 
     // Start Button
@@ -332,14 +411,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startCountdownDisplay() {
-        clearInterval(countdownTimer); // Clear any existing countdown interval
+        clearInterval(countdownTimer);
+
+        const phase = currentExercise.phases[currentPhaseIndex];
+        const totalDuration = phase.duration;
+        currentCountdownValue = 1; // Start counting from 1
+        let elapsedAnimationTime = 0; // For animation scaling, tracks ticks from 0 to totalDuration-1
+
         countdownNumber.textContent = currentCountdownValue;
 
+        // Set initial state for animation based on phase type
+        if (phase.name === "Inhale") {
+            breathingCircle.style.transform = `scale(${MIN_SCALE_NO_HOLD_AFTER})`;
+        } else if (phase.name === "Exhale") {
+            breathingCircle.style.transform = `scale(${MAX_SCALE})`;
+        } else if (phase.name === "Hold") {
+            const previousPhaseIndex = (currentPhaseIndex - 1 + currentExercise.phases.length) % currentExercise.phases.length;
+            const previousPhase = currentExercise.phases[previousPhaseIndex];
+            if (previousPhase.name === "Inhale") {
+                breathingCircle.style.transform = `scale(${MAX_SCALE})`; // Hold large after inhale
+            } else { // After Exhale or another Hold (implying it was small)
+                breathingCircle.style.transform = `scale(${MIN_VISIBLE_HOLD_SCALE})`;
+            }
+        }
+        breathingCircle.style.transition = `transform ${100 / 1000}s linear, background-color 1s ease-in-out`;
+
         countdownTimer = setInterval(() => {
-            currentCountdownValue--;
             countdownNumber.textContent = currentCountdownValue;
-            if (currentCountdownValue <= 0) {
+            const animationProgress = currentCountdownValue / totalDuration;
+
+            if (phase.name === "Inhale") {
+                const scale = MIN_SCALE_NO_HOLD_AFTER + ((MAX_SCALE - MIN_SCALE_NO_HOLD_AFTER) * animationProgress);
+                breathingCircle.style.transform = `scale(${Math.min(scale, MAX_SCALE)})`;
+            } else if (phase.name === "Exhale") {
+                // Determine target scale for this exhale
+                let targetExhaleScale = MIN_SCALE_NO_HOLD_AFTER;
+                const nextPhaseIndex = (currentPhaseIndex + 1) % currentExercise.phases.length;
+                if (currentExercise.phases[nextPhaseIndex] && currentExercise.phases[nextPhaseIndex].name === "Hold") {
+                    targetExhaleScale = MIN_VISIBLE_HOLD_SCALE;
+                }
+
+                const scale = MAX_SCALE - ((MAX_SCALE - targetExhaleScale) * animationProgress);
+                breathingCircle.style.transform = `scale(${Math.max(scale, targetExhaleScale)})`;
+            }
+            // Hold phase keeps its scale set initially.
+
+            if (currentCountdownValue >= totalDuration) {
                 clearInterval(countdownTimer);
+                // Ensure final scale is set precisely
+                if (phase.name === "Inhale") {
+                    breathingCircle.style.transform = `scale(${MAX_SCALE})`;
+                } else if (phase.name === "Exhale") {
+                    // Re-check target for final state of exhale
+                    let finalExhaleTarget = MIN_SCALE_NO_HOLD_AFTER;
+                    const nextPhaseIndex = (currentPhaseIndex + 1) % currentExercise.phases.length;
+                     if (currentExercise.phases[nextPhaseIndex] && currentExercise.phases[nextPhaseIndex].name === "Hold") {
+                        finalExhaleTarget = MIN_VISIBLE_HOLD_SCALE;
+                    }
+                    breathingCircle.style.transform = `scale(${finalExhaleTarget})`;
+                }
+                // For Hold, its scale was set at the beginning of startCountdownDisplay and doesn't change.
+            } else {
+                currentCountdownValue++;
             }
         }, 1000);
     }
@@ -364,18 +497,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-
         exerciseIsRunning = true;
         exerciseIsPaused = false;
         completedCycles = 0;
         currentPhaseIndex = 0;
         updateCycleCountDisplay();
         startSessionTimer();
+
+        // Reset circle to a known small state before starting, to ensure smooth first inhale
+        breathingCircle.style.transition = 'transform 0.1s linear, background-color 1s ease-in-out'; // quick reset
+        breathingCircle.style.transform = 'scale(0.1)';
+        // Delay startNextPhase slightly to allow the reset to apply visually if needed,
+        // or rely on startNextPhase to correctly set initial state.
+        // For now, direct call.
         startNextPhase();
+
 
         startButton.textContent = 'Pause';
         stopButton.disabled = false; // Ensure stop button is enabled
-        instructionText.textContent = currentExercise.phases[0].name; // Show first phase name
+        // instructionText.textContent will be set by startNextPhase -> updateUICircleAndText
     }
 
     function stopExercise() {
@@ -387,6 +527,8 @@ document.addEventListener('DOMContentLoaded', () => {
         startButton.textContent = 'Start';
         stopButton.disabled = true; // Disable stop button when no exercise is running
         instructionText.textContent = 'Exercise stopped. Select an exercise and press Start.';
+        breathingCircle.style.transform = 'scale(1)'; // Reset scale to default
+        breathingCircle.style.transition = 'transform 1s ease-in-out, background-color 1s ease-in-out'; // Restore original transition
     }
 
     function pauseExercise() {
@@ -397,8 +539,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(countdownTimer); // Stop visual countdown
         clearInterval(sessionTimerInterval); // Stop session timer
 
-        // Save remaining time in current phase if needed for precise resume
-        // For simplicity, we'll restart the current phase on resume or just use currentCountdownValue
+        // The circle's current scale is preserved due to inline style.
 
         instructionText.textContent = `Paused: ${currentExercise.phases[currentPhaseIndex].name} (${currentCountdownValue}s left). Press Resume.`;
         startButton.textContent = 'Resume';
@@ -408,23 +549,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!exerciseIsRunning || !exerciseIsPaused) return;
         exerciseIsPaused = false;
 
-        // Restart the current phase's timer and countdown
         const phase = currentExercise.phases[currentPhaseIndex];
-        // currentCountdownValue is already holding the remaining time if countdown was running
-        // If countdown had finished but phase timer hadn't, currentCountdownValue might be 0 or less.
-        // For simplicity, we can restart the phase countdown fully or use remaining.
-        // Let's use the remaining currentCountdownValue if it's > 0, otherwise phase duration.
 
-        if (currentCountdownValue <= 0) { // If countdown finished before pause or was at 0
-           currentCountdownValue = phase.duration; // Restart full phase countdown
+        // currentCountdownValue holds the remaining seconds for the number display.
+        // The animation needs to know how much of the phase duration has passed.
+        // Let's assume elapsedTime was implicitly tracked by (phase.duration - currentCountdownValue)
+        // For simplicity on resume, we'll restart the countdown logic which includes animation.
+        // The visual scale is already where it was due to inline styles.
+
+        if (currentCountdownValue <= 0) {
+           currentCountdownValue = phase.duration;
         }
 
-        updateUICircleAndText(phase.name, phase.animationClass); // Ensure UI is correct
-        startCountdownDisplay(); // Restart the visual countdown
-        startSessionTimer(); // Resume session timer
+        updateUICircleAndText(phase.name, phase.animationClass, false); // Update text and color, but not scale via class
+        startCountdownDisplay(); // This will handle the animation from current state if logic is robust
+        startSessionTimer();
 
-        // Resume phase timer for the remaining duration of the current phase
-        // currentPhaseTimer was cleared on pause. We need to set a new one.
         currentPhaseTimer = setTimeout(() => {
             currentPhaseIndex++;
             if (currentPhaseIndex >= currentExercise.phases.length) {
@@ -435,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (exerciseIsRunning && !exerciseIsPaused) {
                 startNextPhase();
             }
-        }, currentCountdownValue * 1000); // Use remaining time for phase transition
+        }, currentCountdownValue * 1000);
 
         startButton.textContent = 'Pause';
         instructionText.textContent = phase.name;
@@ -443,27 +583,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- UI Update functions ---
-    function updateUICircleAndText(phaseName, animationClass) {
+    function updateUICircleAndText(phaseName, animationClass, updateScaleViaClass = true) {
         instructionText.textContent = phaseName;
-        // Manage circle animation classes
-        breathingCircle.classList.remove('inhale', 'exhale', 'hold'); // Remove all phase-specific classes
+        breathingCircle.classList.remove('inhale', 'exhale', 'hold');
         if (animationClass) {
-            breathingCircle.classList.add(animationClass);
+            breathingCircle.classList.add(animationClass); // For background color primarily now
         }
-        // Ensure the base 'circle' class is always present if others are removed.
-        // This is implicitly handled by removing specific classes and adding new ones.
-        // If no animationClass, it defaults to the base .circle style.
+
+        if (updateScaleViaClass) { // This part is now mostly handled by startCountdownDisplay
+            // Or by explicit settings in start/stop/reset
+            // We might remove scale changes from CSS classes if fully JS controlled
+            // For now, let CSS classes define colors and JS define scale over time.
+        }
     }
 
     function playPhaseSound(soundId) {
-        // This will be detailed in Sound Implementation step
-        if (soundEnabled && soundId) {
-            const soundElement = document.getElementById(soundId);
-            if (soundElement) {
-                soundElement.currentTime = 0;
-                soundElement.play().catch(e => console.warn("Sound play failed:", e));
-            }
+        initAudioContext(); // Ensure AudioContext is initialized
+
+        if (!soundEnabled || !audioCtx || !soundId) return; // Also check if audioCtx is available
+
+        if (soundId === 'inhaleSound') {
+            generateInhaleSound();
+        } else if (soundId === 'exhaleSound') {
+            generateExhaleSound();
         }
+        // No sound for 'hold' phases (soundId will be null)
     }
 
     function updateCycleCountDisplay() {
