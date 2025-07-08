@@ -76,6 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
         generateSound(440, 'sine', 0.6, 0.2); // A4 note, sine wave
     }
 
+    function generateHoldSound() {
+        // A very subtle, low hum for hold
+        generateSound(110, 'sine', 0.7, 0.1); // A2 note, sine wave, soft and slightly longer
+    }
+
 
     // State Management Variables
     let currentExercise = null; // Stores the selected exercise config
@@ -98,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Inhale for 4s, Hold for 7s, Exhale for 8s.",
             phases: [
                 { name: "Inhale", duration: 4, soundId: 'inhaleSound', animationClass: "inhale" },
-                { name: "Hold", duration: 7, soundId: null, animationClass: "hold" },
+                { name: "Hold", duration: 7, soundId: 'holdSound', animationClass: "hold" },
                 { name: "Exhale", duration: 8, soundId: 'exhaleSound', animationClass: "exhale" }
             ]
         },
@@ -107,9 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "Inhale for 4s, Hold for 4s, Exhale for 4s, Hold for 4s.",
             phases: [
                 { name: "Inhale", duration: 4, soundId: 'inhaleSound', animationClass: "inhale" },
-                { name: "Hold", duration: 4, soundId: null, animationClass: "hold" },
+                { name: "Hold", duration: 4, soundId: 'holdSound', animationClass: "hold" },
                 { name: "Exhale", duration: 4, soundId: 'exhaleSound', animationClass: "exhale" },
-                { name: "Hold", duration: 4, soundId: null, animationClass: "hold" }
+                { name: "Hold", duration: 4, soundId: 'holdSound', animationClass: "hold" }
             ]
         },
         "diaphragmatic": {
@@ -351,9 +356,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCustomExerciseConfig(inhale, hold1, exhale, hold2) {
         exercises.custom.phases = [];
         if (inhale > 0) exercises.custom.phases.push({ name: "Inhale", duration: inhale, soundId: 'inhaleSound', animationClass: "inhale" });
-        if (hold1 > 0) exercises.custom.phases.push({ name: "Hold", duration: hold1, soundId: null, animationClass: "hold" });
+        if (hold1 > 0) exercises.custom.phases.push({ name: "Hold", duration: hold1, soundId: 'holdSound', animationClass: "hold" });
         if (exhale > 0) exercises.custom.phases.push({ name: "Exhale", duration: exhale, soundId: 'exhaleSound', animationClass: "exhale" });
-        if (hold2 > 0) exercises.custom.phases.push({ name: "Hold", duration: hold2, soundId: null, animationClass: "hold" });
+        if (hold2 > 0) exercises.custom.phases.push({ name: "Hold", duration: hold2, soundId: 'holdSound', animationClass: "hold" });
 
         // Update description for custom exercise
         let desc = "Custom: ";
@@ -606,8 +611,10 @@ document.addEventListener('DOMContentLoaded', () => {
             generateInhaleSound();
         } else if (soundId === 'exhaleSound') {
             generateExhaleSound();
+        } else if (soundId === 'holdSound') {
+            generateHoldSound();
         }
-        // No sound for 'hold' phases (soundId will be null)
+        // No sound for 'hold' phases (soundId will be null or unhandled)
     }
 
     function updateCycleCountDisplay() {
