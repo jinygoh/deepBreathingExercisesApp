@@ -77,8 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function generateHoldSound() {
-        // A very subtle, low hum for hold
-        generateSound(110, 'sine', 0.7, 0.1); // A2 note, sine wave, soft and slightly longer
+        // A subtle, low hum for hold, with adjusted parameters for better audibility
+        generateSound(165, 'triangle', 0.7, 0.2); // E3 note, triangle wave, volume 0.2
     }
 
 
