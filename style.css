@@ -3,8 +3,8 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #2C3E50; /* Darker Slate Blue */
-    color: #ECF0F1; /* Lighter Silver */
+    background-color: #3D402D; /* Dark Olive Green like */
+    color: #ECF0F1; /* Lighter Silver - good contrast */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,16 +14,16 @@ body {
 }
 
 .app-container {
-    background-color: #34495E; /* Darker Wet Asphalt */
+    background-color: #556B2F; /* DarkOliveGreen */
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Slightly more pronounced shadow */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); /* Slightly deeper shadow for earthy feel */
     width: 90%;
     max-width: 600px;
 }
 
 header h1 {
-    color: #95A5A6; /* Lighter Grey - Silver */
+    color: #FAF0E6; /* Linen - for good contrast on darker green/khaki */
     margin-bottom: 20px;
 }
 
@@ -36,42 +36,42 @@ header h1 {
 .circle {
     width: 200px;
     height: 200px;
-    background-color: #7F8C8D; /* Greyish color for hold */
+    background-color: #CEC8B0; /* Soft Khaki/Buff - new default/hold color */
     border-radius: 50%;
     margin: 20px auto;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: transform 1s ease-in-out, background-color 1s ease-in-out;
-    box-shadow: 0 0 20px rgba(44, 62, 80, 0.7); /* Shadow based on new dark bg */
+    box-shadow: 0 0 20px rgba(61, 64, 45, 0.7); /* Shadow based on dark olive green */
 }
 
 #countdownNumber {
     font-size: 3em;
-    color: #ECF0F1; /* Lighter Silver */
+    color: #3A3B3C; /* Darker color for text inside lighter circle */
     font-weight: bold;
 }
 
 #instructionText {
     font-size: 1.5em;
-    color: #BDC3C7; /* Lighter Grey - Clouds */
+    color: #E0E0E0; /* Slightly off-white, good on dark olive */
     min-height: 2.2em; /* Reserve space to prevent layout shifts */
 }
 
 /* Circle Animations */
 .circle.inhale {
-    transform: scale(1.2);
-    background-color: #2980B9; /* Darker Peter River Blue */
+    /* transform: scale(1.2); JS handles actual scale */
+    background-color: #8FBC8F; /* DarkSeaGreen (muted, fresh green) */
 }
 
 .circle.exhale {
-    transform: scale(0.8);
-    background-color: #2E8B57; /* Calming Sea Green */
+    /* transform: scale(0.8); JS handles actual scale */
+    background-color: #6B8E23; /* OliveDrab (earthy green) */
 }
 
 .circle.hold {
-    transform: scale(1); /* Static or could add subtle pulse later */
-    background-color: #7F8C8D; /* Greyish - Asbestos */
+    /* transform: scale(1); JS handles actual scale */
+    background-color: #CEC8B0; /* Soft Khaki/Buff - consistent hold color */
 }
 
 
@@ -94,29 +94,34 @@ header h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #5D6D7E; /* Darker greyish blue */
-    color: #ECF0F1; /* Lighter Silver */
+    background-color: #6B8E23; /* OliveDrab base for buttons */
+    color: #F5F5F5; /* Off-white/very light grey for text on buttons */
     transition: background-color 0.3s ease;
 }
 
-.exercise-btn:hover, #startButton:hover, #soundToggleButton:hover { /* Exclude stop & apply custom for now */
-    background-color: #3B6F44; /* Subtle dark green hover */
+/* General hover for non-special buttons */
+.exercise-btn:hover, #startButton:hover, #soundToggleButton:hover {
+    background-color: #809B3F; /* Lighter OliveDrab for hover */
 }
 
 #applyCustomButton {
-    background-color: #27AE60; /* Green for Apply button */
+    background-color: #8FBC8F; /* DarkSeaGreen (like inhale circle) for Apply */
+    color: #2F4F4F; /* Dark Slate Gray text for contrast on lighter green */
 }
 #applyCustomButton:hover {
-    background-color: #229954; /* Darker green hover for Apply */
+    background-color: #7AAC7A; /* Slightly darker/muted DarkSeaGreen */
 }
-
 
 .exercise-btn.active {
-    background-color: #27AE60; /* Distinct green for active exercise */
-    color: white;
+    background-color: #BDB76B; /* DarkKhaki for active exercise */
+    color: #3A3B3C; /* Dark text for contrast on Khaki */
 }
 
-/* Keep stop button red, but its hover can be a darker red as before */
+/* Stop button remains red for clarity */
+#stopButton {
+    background-color: #C0392B; /* Darker Pomegranate red for stop */
+    color: #F5F5F5;
+}
 #stopButton:hover {
     background-color: #A93226; /* Even darker red on hover */
 }
@@ -144,16 +149,16 @@ header h1 {
 
 /* Customization Area */
 .customization-area {
-    background-color: #2C3E50; /* Darker Slate Blue - same as body for seamless feel */
+    background-color: #4A4F39; /* Darker Olive/Khaki */
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
-    border: 1px solid #34495E; /* Border to match app container */
+    border: 1px solid #6B8E23; /* OliveDrab border, matches button base */
 }
 
 .customization-area h2 {
     margin-top: 0;
-    color: #95A5A6; /* Lighter Grey - Silver */
+    color: #FAF0E6; /* Linen, like main header */
     font-size: 1.2em;
 }
 
@@ -166,18 +171,18 @@ header h1 {
 
 .customization-area label {
     margin-right: 10px;
-    color: #BDC3C7; /* Lighter Grey - Clouds */
+    color: #E0E0E0; /* Slightly off-white */
 }
 
 .customization-area input[type="number"] {
     width: 60px;
     padding: 8px;
-    border: 1px solid #5D6D7E; /* Darker greyish blue border */
+    border: 1px solid #809B3F; /* Lighter OliveDrab border, matches button hover */
     border-radius: 4px;
     text-align: center;
     font-size: 1em;
-    background-color: #34495E; /* Darker Wet Asphalt */
-    color: #ECF0F1; /* Lighter Silver */
+    background-color: #3D402D; /* Dark Olive Green like body bg */
+    color: #F5F5F5; /* Off-white text */
 }
 
 /* Session Info */
@@ -186,9 +191,9 @@ header h1 {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: #2C3E50; /* Darker Slate Blue */
+    background-color: #4A4F39; /* Darker Olive/Khaki, same as customization area */
     border-radius: 5px;
-    color: #ECF0F1;
+    /* color: #ECF0F1; default from body is fine */
 }
 
 .sound-toggle button {
@@ -203,31 +208,31 @@ header h1 {
 .sound-toggle svg {
     width: 24px;
     height: 24px;
-    fill: #ECF0F1; /* Lighter Silver for icon */
+    fill: #F5F5F5; /* Off-white icon */
     margin-right: 5px;
 }
 
 .sound-toggle #soundStatusText {
     font-size: 0.9em;
-    color: #BDC3C7; /* Lighter Grey - Clouds */
+    color: #E0E0E0; /* Slightly off-white */
 }
 
 .metrics p {
     margin: 0 10px;
     font-size: 0.9em;
-    color: #BDC3C7; /* Lighter Grey - Clouds */
+    color: #E0E0E0; /* Slightly off-white */
 }
 
 /* Footer */
 footer {
     margin-top: 20px;
     font-size: 0.9em;
-    color: #95A5A6; /* Lighter Grey - Silver */
+    color: #CEC8B0; /* Soft Khaki/Buff, like hold circle */
 }
 
 /* Accessibility */
 button:focus, input:focus {
-    outline: 2px solid #2ECC71; /* Green focus outline */
+    outline: 2px solid #DAA520; /* Goldenrod focus outline for earthy contrast */
     outline-offset: 2px;
 }
 
