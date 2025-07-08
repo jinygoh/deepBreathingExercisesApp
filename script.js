@@ -45,8 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Call initAudioContext early, perhaps on DOMContentLoaded or first sound interaction.
     // For now, let's ensure it's called before any sound generation.
 
-    function generateSound(frequency, type = 'sine', durationSeconds = 0.5, volume = 0.3) {
-        if (!audioCtx || !soundEnabled) return;
+    function generateSound(frequency, type = 'sine', durationSeconds = 0.5, volume = 0.3, phaseNameForLog = "Unknown") {
+        if (!audioCtx) {
+            console.log(`AudioContext not available for ${phaseNameForLog}. SoundEnabled: ${soundEnabled}`);
+            return;
+        }
+        if (!soundEnabled) {
+            console.log(`Sound generation skipped for ${phaseNameForLog} because soundEnabled is false.`);
+            return;
+        }
+
+        // console.log(`Generating sound for ${phaseNameForLog}: Freq=${frequency}, Type=${type}, Dur=${durationSeconds}, Vol=${volume}`);
 
         const oscillator = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
@@ -68,17 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateInhaleSound() {
         // Higher pitch for inhale
-        generateSound(660, 'triangle', 0.4, 0.25); // A5 note, triangle wave for softer sound
+        generateSound(660, 'triangle', 0.4, 0.25, "Inhale"); // A5 note, triangle wave for softer sound
     }
 
     function generateExhaleSound() {
         // Lower pitch for exhale
-        generateSound(440, 'sine', 0.6, 0.2); // A4 note, sine wave
+        generateSound(440, 'sine', 0.6, 0.2, "Exhale"); // A4 note, sine wave
     }
 
     function generateHoldSound() {
-        // A subtle, low hum for hold, with adjusted parameters for better audibility
-        generateSound(165, 'triangle', 0.7, 0.2); // E3 note, triangle wave, volume 0.2
+        // Audible and distinct sound for hold phase
+        generateSound(330, 'square', 0.7, 0.2, "Hold"); // E4 note, square wave
     }
 
 

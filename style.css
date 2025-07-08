@@ -3,8 +3,8 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #3D402D; /* Dark Olive Green like */
-    color: #ECF0F1; /* Lighter Silver - good contrast */
+    background-color: #5E9C94; /* Serene Teal */
+    color: #2F4F4F; /* Deep Slate for primary text */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,17 +14,20 @@ body {
 }
 
 .app-container {
-    background-color: #556B2F; /* DarkOliveGreen */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); /* Slightly deeper shadow for earthy feel */
+    background-color: #F0E6D2; /* Soft Sand */
+    padding: 25px; /* Slightly more padding */
+    border-radius: 15px; /* More rounded for modern feel */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Softer, more diffused shadow */
     width: 90%;
     max-width: 600px;
+    color: #2F4F4F; /* Deep Slate for text within app-container */
 }
 
 header h1 {
-    color: #FAF0E6; /* Linen - for good contrast on darker green/khaki */
-    margin-bottom: 20px;
+    color: #2F4F4F; /* Deep Slate for header text on Soft Sand bg */
+    margin-bottom: 25px; /* Increased margin */
+    font-weight: 600;
+    letter-spacing: 0.5px; /* Slightly more airy */
 }
 
 /* Breathing Guide */
@@ -36,42 +39,39 @@ header h1 {
 .circle {
     width: 200px;
     height: 200px;
-    background-color: #CEC8B0; /* Soft Khaki/Buff - new default/hold color */
+    background-color: #E0D8C5; /* Slightly darker Soft Sand for base circle */
     border-radius: 50%;
     margin: 20px auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 1s ease-in-out, background-color 1s ease-in-out;
-    box-shadow: 0 0 20px rgba(61, 64, 45, 0.7); /* Shadow based on dark olive green */
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.8s ease-in-out; /* Smoother transitions */
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.1); /* Inner and outer shadow for depth */
 }
 
 #countdownNumber {
     font-size: 3em;
-    color: #3A3B3C; /* Darker color for text inside lighter circle */
+    color: #2F4F4F; /* Deep Slate */
     font-weight: bold;
 }
 
 #instructionText {
     font-size: 1.5em;
-    color: #E0E0E0; /* Slightly off-white, good on dark olive */
-    min-height: 2.2em; /* Reserve space to prevent layout shifts */
+    color: #2F4F4F; /* Deep Slate */
+    min-height: 2.2em;
 }
 
-/* Circle Animations */
+/* Circle Animations using Serene Teal variations */
 .circle.inhale {
-    /* transform: scale(1.2); JS handles actual scale */
-    background-color: #8FBC8F; /* DarkSeaGreen (muted, fresh green) */
+    background-color: #7FBAB2; /* Lighter Serene Teal */
 }
 
 .circle.exhale {
-    /* transform: scale(0.8); JS handles actual scale */
-    background-color: #6B8E23; /* OliveDrab (earthy green) */
+    background-color: #5E9C94; /* Main Serene Teal */
 }
 
 .circle.hold {
-    /* transform: scale(1); JS handles actual scale */
-    background-color: #CEC8B0; /* Soft Khaki/Buff - consistent hold color */
+    background-color: #A8D8D1; /* Very light Serene Teal for hold */
 }
 
 
@@ -84,46 +84,61 @@ header h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px; /* Increased gap */
+    margin-bottom: 25px; /* Increased margin */
 }
 
 .exercise-btn, #startButton, #stopButton, #applyCustomButton, #soundToggleButton {
-    padding: 10px 15px;
+    padding: 12px 18px; /* Increased padding */
     font-size: 1em;
-    border: none;
-    border-radius: 5px;
+    border: 1px solid transparent; /* Prepare for border on hover/active */
+    border-radius: 8px; /* More rounded */
     cursor: pointer;
-    background-color: #6B8E23; /* OliveDrab base for buttons */
-    color: #F5F5F5; /* Off-white/very light grey for text on buttons */
-    transition: background-color 0.3s ease;
+    background-color: #E0D8C5; /* Slightly darker Soft Sand for buttons */
+    color: #2F4F4F; /* Deep Slate text */
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    font-weight: 500; /* Medium weight */
 }
 
-/* General hover for non-special buttons */
-.exercise-btn:hover, #startButton:hover, #soundToggleButton:hover {
-    background-color: #809B3F; /* Lighter OliveDrab for hover */
+.exercise-btn:hover, #startButton:hover, #applyCustomButton:hover {
+    background-color: #D3CABB; /* Darker shade of Soft Sand for hover */
+    border-color: #5E9C94; /* Serene Teal border on hover */
+    transform: translateY(-1px); /* Subtle lift effect */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow on hover */
 }
+
+/* Specific hover for sound toggle button as it's different */
+#soundToggleButton:hover {
+    background-color: rgba(94, 156, 148, 0.1); /* Very light Serene Teal fill */
+    border-color: transparent; /* Keep border transparent or match new bg */
+    transform: translateY(-1px);
+}
+
 
 #applyCustomButton {
-    background-color: #8FBC8F; /* DarkSeaGreen (like inhale circle) for Apply */
-    color: #2F4F4F; /* Dark Slate Gray text for contrast on lighter green */
+    background-color: #5E9C94; /* Serene Teal for apply button */
+    color: #F0E6D2; /* Soft Sand text */
 }
 #applyCustomButton:hover {
-    background-color: #7AAC7A; /* Slightly darker/muted DarkSeaGreen */
+    background-color: #4A7C74; /* Darker Serene Teal */
+    border-color: #4A7C74;
 }
 
 .exercise-btn.active {
-    background-color: #BDB76B; /* DarkKhaki for active exercise */
-    color: #3A3B3C; /* Dark text for contrast on Khaki */
+    background-color: #5E9C94; /* Serene Teal for active exercise */
+    color: #F0E6D2; /* Soft Sand text */
+    border-color: #4A7C74; /* Darker teal border */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Consistent shadow for active state */
 }
 
-/* Stop button remains red for clarity */
+/* Stop button still needs to be distinct */
 #stopButton {
-    background-color: #C0392B; /* Darker Pomegranate red for stop */
-    color: #F5F5F5;
+    background-color: #C06A5E; /* Muted, desaturated red, less jarring */
+    color: #F0E6D2; /* Soft Sand text */
 }
 #stopButton:hover {
-    background-color: #A93226; /* Even darker red on hover */
+    background-color: #A9574C; /* Darker muted red */
+    border-color: #A9574C;
 }
 
 
@@ -139,31 +154,24 @@ header h1 {
     font-size: 1.1em;
 }
 
-#stopButton {
-    background-color: #C0392B; /* Darker Pomegranate red for stop */
-}
-#stopButton:hover {
-    background-color: #A93226; /* Even darker red on hover */
-}
-
-
 /* Customization Area */
 .customization-area {
-    background-color: #4A4F39; /* Darker Olive/Khaki */
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #6B8E23; /* OliveDrab border, matches button base */
+    background-color: #E0D8C5; /* Slightly darker Soft Sand */
+    padding: 20px; /* Increased padding */
+    border-radius: 10px; /* Consistent rounding */
+    margin-bottom: 25px; /* Increased margin */
+    border: 1px solid #D3CABB; /* Subtle border */
 }
 
 .customization-area h2 {
     margin-top: 0;
-    color: #FAF0E6; /* Linen, like main header */
-    font-size: 1.2em;
+    color: #2F4F4F; /* Deep Slate */
+    font-size: 1.3em; /* Slightly larger */
+    margin-bottom: 15px;
 }
 
 .customization-area div {
-    margin-bottom: 10px;
+    margin-bottom: 12px; /* Increased margin */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -171,18 +179,18 @@ header h1 {
 
 .customization-area label {
     margin-right: 10px;
-    color: #E0E0E0; /* Slightly off-white */
+    color: #2F4F4F; /* Deep Slate */
 }
 
 .customization-area input[type="number"] {
     width: 60px;
-    padding: 8px;
-    border: 1px solid #809B3F; /* Lighter OliveDrab border, matches button hover */
-    border-radius: 4px;
+    padding: 10px; /* Increased padding */
+    border: 1px solid #C8BFB0; /* Lighter border */
+    border-radius: 6px; /* Consistent rounding */
     text-align: center;
     font-size: 1em;
-    background-color: #3D402D; /* Dark Olive Green like body bg */
-    color: #F5F5F5; /* Off-white text */
+    background-color: #F0E6D2; /* Soft Sand */
+    color: #2F4F4F; /* Deep Slate */
 }
 
 /* Session Info */
@@ -190,10 +198,10 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    background-color: #4A4F39; /* Darker Olive/Khaki, same as customization area */
-    border-radius: 5px;
-    /* color: #ECF0F1; default from body is fine */
+    padding: 15px; /* Increased padding */
+    background-color: #E0D8C5; /* Slightly darker Soft Sand */
+    border-radius: 10px; /* Consistent rounding */
+    color: #2F4F4F; /* Deep Slate */
 }
 
 .sound-toggle button {
@@ -203,36 +211,37 @@ header h1 {
     display: flex;
     align-items: center;
     padding: 5px;
+    color: #2F4F4F; /* Deep Slate for icon and text */
 }
 
 .sound-toggle svg {
     width: 24px;
     height: 24px;
-    fill: #F5F5F5; /* Off-white icon */
-    margin-right: 5px;
+    fill: #2F4F4F; /* Deep Slate icon */
+    margin-right: 8px; /* Increased margin */
 }
 
 .sound-toggle #soundStatusText {
     font-size: 0.9em;
-    color: #E0E0E0; /* Slightly off-white */
+    color: #2F4F4F; /* Deep Slate */
 }
 
 .metrics p {
     margin: 0 10px;
     font-size: 0.9em;
-    color: #E0E0E0; /* Slightly off-white */
+    color: #2F4F4F; /* Deep Slate */
 }
 
 /* Footer */
 footer {
-    margin-top: 20px;
+    margin-top: 25px; /* Increased margin */
     font-size: 0.9em;
-    color: #CEC8B0; /* Soft Khaki/Buff, like hold circle */
+    color: #F0E6D2; /* Soft Sand (on Serene Teal body bg) */
 }
 
 /* Accessibility */
 button:focus, input:focus {
-    outline: 2px solid #DAA520; /* Goldenrod focus outline for earthy contrast */
+    outline: 3px solid #5E9C94; /* Serene Teal focus outline */
     outline-offset: 2px;
 }
 
