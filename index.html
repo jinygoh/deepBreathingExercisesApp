@@ -1,26 +1,44 @@
+<!--
+This file, index.html, is the main HTML document for the SerenityBreath web application.
+It defines the structure of the user interface, including all the visible elements that the user interacts with.
+This file links to the 'style.css' for styling and the 'script.js' for functionality.
+The body contains the main application container, which is divided into a header, main content, and footer.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Standard meta tags for character set, viewport, and browser compatibility -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title of the web page -->
     <title>SerenityBreath</title>
+    <!-- Link to the external stylesheet for the application -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Main container for the entire application, styled by 'app-container' class -->
     <div class="app-container">
+        <!-- Header section containing the application title -->
         <header>
             <h1>SerenityBreath</h1>
         </header>
 
+        <!-- Main content area of the application -->
         <main>
+            <!-- Section for the visual breathing guide -->
             <div class="breathing-guide">
+                <!-- The animated circle that visually guides the user's breathing -->
                 <div class="circle" id="breathingCircle">
+                    <!-- Displays the countdown number for each phase of the breathing exercise -->
                     <span id="countdownNumber"></span>
                 </div>
+                <!-- Displays instructions to the user, like "Inhale", "Exhale", or "Select an exercise" -->
                 <p id="instructionText">Select an exercise and press Start</p>
             </div>
 
+            <!-- Container for all user controls -->
             <div class="controls">
+                <!-- Section for selecting a predefined or custom breathing exercise -->
                 <div class="exercise-selection">
                     <button class="exercise-btn" data-exercise="4-7-8">4-7-8 Breathing</button>
                     <button class="exercise-btn" data-exercise="box">Box Breathing</button>
@@ -29,52 +47,68 @@
                     <button class="exercise-btn" data-exercise="custom">Custom Breathing</button>
                 </div>
 
+                <!-- Main controls for starting, pausing, resuming, and stopping the exercise -->
                 <div class="main-controls">
                     <button id="startButton">Start</button>
                     <button id="stopButton">Stop</button>
                 </div>
             </div>
 
+            <!-- Area for customizing the breathing pattern, hidden by default -->
             <div class="customization-area" id="customizationArea" style="display: none;">
                 <h2>Custom Breathing Settings</h2>
+                <!-- Input for setting the inhale duration -->
                 <div>
                     <label for="inhaleDuration">Inhale (s):</label>
                     <input type="number" id="inhaleDuration" min="1" value="4">
                 </div>
+                <!-- Input for setting the hold duration after inhaling -->
                 <div>
                     <label for="hold1Duration">Hold after Inhale (s):</label>
                     <input type="number" id="hold1Duration" min="0" value="7">
                 </div>
+                <!-- Input for setting the exhale duration -->
                 <div>
                     <label for="exhaleDuration">Exhale (s):</label>
                     <input type="number" id="exhaleDuration" min="1" value="8">
                 </div>
+                <!-- Input for setting the hold duration after exhaling -->
                 <div>
                     <label for="hold2Duration">Hold after Exhale (s):</label>
                     <input type="number" id="hold2Duration" min="0" value="0">
                 </div>
+                <!-- Button to apply the custom settings -->
                 <button id="applyCustomButton">Apply</button>
             </div>
 
+            <!-- Section displaying session information like sound control, cycle count, and timer -->
             <div class="session-info">
+                <!-- Button to toggle sound on or off -->
                 <div class="sound-toggle">
                     <button id="soundToggleButton">
+                        <!-- SVG icon for the sound toggle button -->
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+                        <!-- Text indicating the current sound status (On/Off) -->
                         <span id="soundStatusText">Sound On</span>
                     </button>
                 </div>
+                <!-- Displays metrics for the current session -->
                 <div class="metrics">
+                    <!-- Shows the number of completed breathing cycles -->
                     <p>Cycles: <span id="cycleCount">0</span></p>
+                    <!-- Shows the elapsed time of the current session -->
                     <p>Time: <span id="sessionTimer">00:00</span></p>
                 </div>
             </div>
         </main>
 
+        <!-- Footer section of the application -->
         <footer>
             <p>Find your calm.</p>
         </footer>
     </div>
 
+    <!-- Link to the external JavaScript file which contains all the application logic -->
     <script src="script.js"></script>
 </body>
 </html>

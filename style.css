@@ -1,147 +1,165 @@
-/* Global Styles */
+/*
+This style.css file provides the visual styling for the SerenityBreath application.
+It uses a calm and serene color palette (Teal, Sand, Slate) to create a relaxing user experience.
+The styles are organized into sections: Global, App Container, Header, Breathing Guide, Controls,
+Customization Area, Session Info, Footer, Accessibility, and Responsive Design.
+This file is linked by index.html and styles the elements defined there.
+*/
+
+/* --- Global Styles --- */
+/* These styles apply to the entire document, setting the base font, colors, and layout. */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A clean, modern font stack. */
     margin: 0;
     padding: 0;
-    background-color: #5E9C94; /* Serene Teal */
-    color: #2F4F4F; /* Deep Slate for primary text */
-    display: flex;
+    background-color: #5E9C94; /* A calming Serene Teal for the page background. */
+    color: #2F4F4F; /* Deep Slate for default text, providing good contrast on the teal. */
+    display: flex; /* Using flexbox to center the main app container. */
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    text-align: center;
-    overflow-x: hidden;
+    min-height: 100vh; /* Ensures the body takes up at least the full viewport height. */
+    text-align: center; /* Center-aligns text within the body. */
+    overflow-x: hidden; /* Prevents horizontal scrolling. */
 }
 
+/* --- App Container --- */
+/* This is the main white box that holds the application content. */
 .app-container {
-    background-color: #F0E6D2; /* Soft Sand */
-    padding: 25px; /* Slightly more padding */
-    border-radius: 15px; /* More rounded for modern feel */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Softer, more diffused shadow */
-    width: 90%;
-    max-width: 600px;
-    color: #2F4F4F; /* Deep Slate for text within app-container */
+    background-color: #F0E6D2; /* A soft, sandy color for the container background. */
+    padding: 25px;
+    border-radius: 15px; /* Rounded corners for a softer, more modern look. */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* A subtle shadow to lift the container off the page. */
+    width: 90%; /* Responsive width. */
+    max-width: 600px; /* Capped at a maximum width for larger screens. */
+    color: #2F4F4F; /* Sets the default text color for all elements inside the container. */
 }
 
+/* --- Header --- */
+/* Styles for the main title of the application. */
 header h1 {
-    color: #2F4F4F; /* Deep Slate for header text on Soft Sand bg */
-    margin-bottom: 25px; /* Increased margin */
-    font-weight: 600;
-    letter-spacing: 0.5px; /* Slightly more airy */
+    color: #2F4F4F;
+    margin-bottom: 25px;
+    font-weight: 600; /* A semi-bold font weight. */
+    letter-spacing: 0.5px; /* Adds a bit of space between letters for readability. */
 }
 
-/* Breathing Guide */
+/* --- Breathing Guide --- */
+/* This section contains the main visual components for the breathing exercise. */
 .breathing-guide {
     margin-bottom: 30px;
-    position: relative;
+    position: relative; /* Establishes a positioning context for child elements. */
 }
 
+/* The animated circle that guides the user's breathing. */
 .circle {
     width: 200px;
     height: 200px;
-    background-color: #E0D8C5; /* Slightly darker Soft Sand for base circle */
-    border-radius: 50%;
-    margin: 20px auto;
-    display: flex;
+    background-color: #E0D8C5; /* A slightly darker sand color for the base state. */
+    border-radius: 50%; /* Makes the div a perfect circle. */
+    margin: 20px auto; /* Centers the circle horizontally. */
+    display: flex; /* Uses flexbox to center the content inside the circle. */
     justify-content: center;
     align-items: center;
-    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.8s ease-in-out; /* Smoother transitions */
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.1); /* Inner and outer shadow for depth */
+    /* Smooth transitions for scaling (transform) and color changes. */
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.8s ease-in-out;
+    /* Adds depth with an inner shadow and a subtle outer shadow. */
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.1);
 }
 
+/* The number displayed inside the circle, counting down the seconds. */
 #countdownNumber {
     font-size: 3em;
-    color: #2F4F4F; /* Deep Slate */
+    color: #2F4F4F;
     font-weight: bold;
 }
 
+/* The text instruction below the circle (e.g., "Inhale", "Exhale"). */
 #instructionText {
     font-size: 1.5em;
-    color: #2F4F4F; /* Deep Slate */
-    min-height: 2.2em;
+    color: #2F4F4F;
+    min-height: 2.2em; /* Ensures a consistent height to prevent layout shifts when text changes. */
 }
 
-/* Circle Animations using Serene Teal variations */
-.circle.inhale {
-    background-color: #7FBAB2; /* Lighter Serene Teal */
-}
-
-.circle.exhale {
-    background-color: #5E9C94; /* Main Serene Teal */
-}
-
-.circle.hold {
-    background-color: #A8D8D1; /* Very light Serene Teal for hold */
-}
+/* --- Circle Animations --- */
+/* These classes are added/removed by script.js to change the circle's background color during different phases. */
+.circle.inhale { background-color: #7FBAB2; /* Lighter Serene Teal for inhale. */ }
+.circle.exhale { background-color: #5E9C94; /* Main Serene Teal for exhale. */ }
+.circle.hold { background-color: #A8D8D1; /* A very light teal for hold. */ }
 
 
-/* Controls */
+/* --- Controls --- */
+/* This section contains all the buttons and inputs for controlling the application. */
 .controls {
     margin-bottom: 20px;
 }
 
+/* Container for the exercise selection buttons. */
 .exercise-selection {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allows buttons to wrap to the next line on smaller screens. */
     justify-content: center;
-    gap: 12px; /* Increased gap */
-    margin-bottom: 25px; /* Increased margin */
+    gap: 12px; /* Space between the buttons. */
+    margin-bottom: 25px;
 }
 
+/* Shared styles for all buttons in the application. */
 .exercise-btn, #startButton, #stopButton, #applyCustomButton, #soundToggleButton {
-    padding: 12px 18px; /* Increased padding */
+    padding: 12px 18px;
     font-size: 1em;
-    border: 1px solid transparent; /* Prepare for border on hover/active */
-    border-radius: 8px; /* More rounded */
+    border: 1px solid transparent; /* A transparent border to prevent layout shift on hover. */
+    border-radius: 8px;
     cursor: pointer;
-    background-color: #E0D8C5; /* Slightly darker Soft Sand for buttons */
-    color: #2F4F4F; /* Deep Slate text */
+    background-color: #E0D8C5;
+    color: #2F4F4F;
+    /* Smooth transitions for various properties on interaction. */
     transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    font-weight: 500; /* Medium weight */
+    font-weight: 500;
 }
 
+/* Hover state for most buttons. */
 .exercise-btn:hover, #startButton:hover, #applyCustomButton:hover {
-    background-color: #D3CABB; /* Darker shade of Soft Sand for hover */
-    border-color: #5E9C94; /* Serene Teal border on hover */
-    transform: translateY(-1px); /* Subtle lift effect */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow on hover */
+    background-color: #D3CABB; /* Darker sand color on hover. */
+    border-color: #5E9C94; /* Teal border appears on hover. */
+    transform: translateY(-1px); /* A subtle "lift" effect. */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Adds a subtle shadow on hover. */
 }
 
-/* Specific hover for sound toggle button as it's different */
+/* A specific, more subtle hover effect for the transparent sound toggle button. */
 #soundToggleButton:hover {
-    background-color: rgba(94, 156, 148, 0.1); /* Very light Serene Teal fill */
-    border-color: transparent; /* Keep border transparent or match new bg */
+    background-color: rgba(94, 156, 148, 0.1); /* A very light teal fill on hover. */
+    border-color: transparent;
     transform: translateY(-1px);
 }
 
-
+/* Special styling for the 'Apply' button to make it stand out. */
 #applyCustomButton {
-    background-color: #5E9C94; /* Serene Teal for apply button */
-    color: #F0E6D2; /* Soft Sand text */
+    background-color: #5E9C94; /* Teal background. */
+    color: #F0E6D2; /* Sand-colored text. */
 }
 #applyCustomButton:hover {
-    background-color: #4A7C74; /* Darker Serene Teal */
+    background-color: #4A7C74; /* A darker teal on hover. */
     border-color: #4A7C74;
 }
 
+/* The '.active' class is added by script.js to the currently selected exercise button. */
 .exercise-btn.active {
-    background-color: #5E9C94; /* Serene Teal for active exercise */
-    color: #F0E6D2; /* Soft Sand text */
-    border-color: #4A7C74; /* Darker teal border */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Consistent shadow for active state */
+    background-color: #5E9C94; /* Teal background to indicate selection. */
+    color: #F0E6D2; /* Sand-colored text. */
+    border-color: #4A7C74;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Stop button still needs to be distinct */
+/* The 'Stop' button is styled with a muted red to be distinct but not alarming. */
 #stopButton {
-    background-color: #C06A5E; /* Muted, desaturated red, less jarring */
-    color: #F0E6D2; /* Soft Sand text */
+    background-color: #C06A5E;
+    color: #F0E6D2;
 }
 #stopButton:hover {
-    background-color: #A9574C; /* Darker muted red */
+    background-color: #A9574C;
     border-color: #A9574C;
 }
 
-
+/* Container for the main Start and Stop buttons. */
 .main-controls {
     display: flex;
     justify-content: center;
@@ -149,29 +167,32 @@ header h1 {
     margin-bottom: 20px;
 }
 
+/* Larger padding and font size for the main control buttons. */
 #startButton, #stopButton {
     padding: 12px 25px;
     font-size: 1.1em;
 }
 
-/* Customization Area */
+/* --- Customization Area --- */
+/* This area is hidden by default and shown when the 'Custom' exercise is selected. */
 .customization-area {
-    background-color: #E0D8C5; /* Slightly darker Soft Sand */
-    padding: 20px; /* Increased padding */
-    border-radius: 10px; /* Consistent rounding */
-    margin-bottom: 25px; /* Increased margin */
-    border: 1px solid #D3CABB; /* Subtle border */
+    background-color: #E0D8C5;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border: 1px solid #D3CABB; /* A subtle border to define the area. */
 }
 
 .customization-area h2 {
     margin-top: 0;
-    color: #2F4F4F; /* Deep Slate */
-    font-size: 1.3em; /* Slightly larger */
+    color: #2F4F4F;
+    font-size: 1.3em;
     margin-bottom: 15px;
 }
 
+/* Styles for each setting row (label + input). */
 .customization-area div {
-    margin-bottom: 12px; /* Increased margin */
+    margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -179,128 +200,114 @@ header h1 {
 
 .customization-area label {
     margin-right: 10px;
-    color: #2F4F4F; /* Deep Slate */
+    color: #2F4F4F;
 }
 
+/* Styles for the number input fields. */
 .customization-area input[type="number"] {
     width: 60px;
-    padding: 10px; /* Increased padding */
-    border: 1px solid #C8BFB0; /* Lighter border */
-    border-radius: 6px; /* Consistent rounding */
+    padding: 10px;
+    border: 1px solid #C8BFB0;
+    border-radius: 6px;
     text-align: center;
     font-size: 1em;
-    background-color: #F0E6D2; /* Soft Sand */
-    color: #2F4F4F; /* Deep Slate */
+    background-color: #F0E6D2;
+    color: #2F4F4F;
 }
 
-/* Session Info */
+/* --- Session Info --- */
+/* This section at the bottom displays the sound toggle, cycle count, and timer. */
 .session-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px; /* Increased padding */
-    background-color: #E0D8C5; /* Slightly darker Soft Sand */
-    border-radius: 10px; /* Consistent rounding */
-    color: #2F4F4F; /* Deep Slate */
+    padding: 15px;
+    background-color: #E0D8C5;
+    border-radius: 10px;
+    color: #2F4F4F;
 }
 
+/* Styles for the sound toggle button area. */
 .sound-toggle button {
-    background-color: transparent;
+    background-color: transparent; /* A button with no background. */
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     padding: 5px;
-    color: #2F4F4F; /* Deep Slate for icon and text */
+    color: #2F4F4F;
 }
 
 .sound-toggle svg {
     width: 24px;
     height: 24px;
-    fill: #2F4F4F; /* Deep Slate icon */
-    margin-right: 8px; /* Increased margin */
+    fill: #2F4F4F; /* The icon color is set with fill. */
+    margin-right: 8px;
 }
 
 .sound-toggle #soundStatusText {
     font-size: 0.9em;
-    color: #2F4F4F; /* Deep Slate */
+    color: #2F4F4F;
 }
 
+/* Styles for the session metrics (cycles and time). */
 .metrics p {
     margin: 0 10px;
     font-size: 0.9em;
-    color: #2F4F4F; /* Deep Slate */
+    color: #2F4F4F;
 }
 
-/* Footer */
+/* --- Footer --- */
 footer {
-    margin-top: 25px; /* Increased margin */
+    margin-top: 25px;
     font-size: 0.9em;
-    color: #F0E6D2; /* Soft Sand (on Serene Teal body bg) */
+    color: #F0E6D2; /* Sand-colored text, which is visible on the teal body background. */
 }
 
-/* Accessibility */
+/* --- Accessibility --- */
+/* Provides a clear visual focus indicator for keyboard navigation. */
 button:focus, input:focus {
-    outline: 3px solid #5E9C94; /* Serene Teal focus outline */
-    outline-offset: 2px;
+    outline: 3px solid #5E9C94; /* A teal outline when an element is focused. */
+    outline-offset: 2px; /* A small gap between the element and the outline. */
 }
 
-/* Responsive Design */
+/* --- Responsive Design --- */
+/* Media queries adjust the layout for different screen sizes. */
+
+/* For tablets and smaller desktops. */
 @media (max-width: 768px) {
     .circle {
         width: 180px;
         height: 180px;
     }
-
-    #countdownNumber {
-        font-size: 2.5em;
-    }
-
-    #instructionText {
-        font-size: 1.3em;
-    }
-
-    .exercise-selection {
-        gap: 8px;
-    }
-
+    #countdownNumber { font-size: 2.5em; }
+    #instructionText { font-size: 1.3em; }
+    .exercise-selection { gap: 8px; }
     .exercise-btn, #startButton, #stopButton, #applyCustomButton, #soundToggleButton {
         padding: 8px 12px;
         font-size: 0.9em;
     }
 }
 
+/* For mobile phones. */
 @media (max-width: 480px) {
-    .app-container {
-        padding: 15px;
-    }
-
-    header h1 {
-        font-size: 1.5em;
-    }
-
+    .app-container { padding: 15px; }
+    header h1 { font-size: 1.5em; }
     .circle {
         width: 150px;
         height: 150px;
     }
+    #countdownNumber { font-size: 2em; }
+    #instructionText { font-size: 1.1em; }
 
-    #countdownNumber {
-        font-size: 2em;
-    }
-
-    #instructionText {
-        font-size: 1.1em;
-    }
-
+    /* Stack buttons vertically on very small screens for better usability. */
     .exercise-selection {
-       flex-direction: column; /* Stack buttons on very small screens */
+       flex-direction: column;
     }
-
     .exercise-btn {
-        width: 100%; /* Make buttons full width */
+        width: 100%;
         margin-bottom: 5px;
     }
-
     .main-controls {
         flex-direction: column;
     }
@@ -309,7 +316,7 @@ button:focus, input:focus {
     }
     #startButton { margin-bottom: 10px; }
 
-
+    /* Adjust the custom settings area for vertical layout. */
     .customization-area div {
         flex-direction: column;
         align-items: flex-start;
@@ -319,9 +326,10 @@ button:focus, input:focus {
     }
     .customization-area input[type="number"] {
         width: 100%;
-        box-sizing: border-box;
+        box-sizing: border-box; /* Ensures padding doesn't add to the width. */
     }
 
+    /* Adjust the session info area for vertical layout. */
     .session-info {
         flex-direction: column;
         gap: 10px;
